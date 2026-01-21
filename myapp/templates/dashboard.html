@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Dashboard</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* ===== THEME ===== */
+body{
+    background:#f4f4f4;
+    color:#000;
+    transition:0.3s;
+}
+
+#themeToggle:checked ~ .page{
+    background:#121212;
+    color:#fff;
+}
+
+/* ===== HEADER ===== */
+.header{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    padding:10px 20px;
+    background:#2c3e50;
+    color:#fff;
+}
+
+/* MENU BUTTON */
+.menu-btn{
+    font-size:22px;
+    cursor:pointer;
+}
+
+/* LOGO */
+.logo{
+    width:40px;
+    height:40px;
+    background:#fff;
+    color:#2c3e50;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+    font-weight:bold;
+}
+
+/* TITLE */
+.title{
+    flex:1;
+    text-align:center;
+}
+
+/* ===== RIGHT CONTROLS ===== */
+.controls{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+/* PROFILE ICON */
+.profile{
+    position:relative;
+}
+
+.profile img{
+    width:35px;
+    height:35px;
+    border-radius:50%;
+    cursor:pointer;
+}
+
+/* OPTIONAL DROPDOWN (SHOW ON CLICK) */
+.profile-menu{
+    display:none;
+    position:absolute;
+    right:0;
+    top:45px;
+    background:#fff;
+    color:#000;
+    width:130px;
+    box-shadow:0 0 5px rgba(0,0,0,0.3);
+}
+
+.profile-menu a{
+    display:block;
+    padding:10px;
+    text-decoration:none;
+    color:#000;
+}
+
+.profile-menu a:hover{
+    background:#ddd;
+}
+
+/* Show dropdown when checkbox checked */
+#profileToggle:checked + label + .profile-menu{
+    display:block;
+}
+
+/* ===== LAYOUT ===== */
+.page{
+    min-height:100vh;
+}
+
+/* ===== SIDEBAR ===== */
+.container{
+    display:flex;
+    transition:0.3s;
+}
+
+.sidebar{
+    width:220px;
+    background:#34495e;
+    color:#fff;
+    transition:0.3s;
+    min-height:calc(100vh - 100px);
+}
+
+/* SIDEBAR CLOSED */
+#sidebarToggle:checked ~ .page .container .sidebar{
+    margin-left:-220px;
+}
+
+.sidebar ul{
+    list-style:none;
+}
+
+.sidebar li{
+    padding:15px;
+    cursor:pointer;
+}
+
+.sidebar li:hover{
+    background:#2c3e50;
+}
+
+/* ===== CONTENT ===== */
+.content{
+    flex:1;
+    padding:20px;
+}
+
+/* ===== FOOTER ===== */
+.footer{
+    text-align:center;
+    padding:10px;
+    background:#2c3e50;
+    color:#fff;
+}
+
+/* ===== HIDDEN CHECKBOX ===== */
+input[type="checkbox"]{
+    display:none;
+}
+</style>
+</head>
+
+<body>
+
+<!-- TOGGLES -->
+<input type="checkbox" id="themeToggle">
+<input type="checkbox" id="sidebarToggle">
+
+<div class="page">
+
+    <!-- ===== HEADER ===== -->
+    <div class="header">
+        <label for="sidebarToggle" class="menu-btn">☰</label>
+
+        <div class="logo">N</div>
+
+        <div class="title">Admin Dashboard</div>
+
+        <div class="controls">
+            <label for="themeToggle" style="cursor:pointer;">🌙</label>
+
+            <!-- PROFILE ICON -->
+            <div class="profile">
+                <input type="checkbox" id="profileToggle">
+                <label for="profileToggle">
+                    <img src="profile.jpg" alt="Admin">
+                </label>
+
+                <div class="profile-menu">
+                    <a href="#">My Profile</a>
+                    <a href="#">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== SIDEBAR + CONTENT ===== -->
+    <div class="container">
+        <div class="sidebar">
+            <ul>
+                <li>Scheduled Meets</li>
+                <li>Approved Meets</li>
+                <li>Rejected Meets</li>
+                <li>Reports</li>
+            </ul>
+        </div>
+
+        <div class="content">
+            <h2>Welcome Admin</h2>
+            <p>Main dashboard content here</p>
+        </div>
+    </div>
+
+    <!-- ===== FOOTER ===== -->
+    <div class="footer">
+        © Dashboard | Close Page
+    </div>
+
+</div>
+</body>
+</html>
