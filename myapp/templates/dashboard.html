@@ -2,225 +2,1317 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Admin Dashboard</title>
+<title>Dashboard</title>
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+/* ---------- THEME VARIABLES ---------- */
+:root {
+    --bg: #F5F5F5;
+    --text: #000000;
+    --nav: #0f172a;
+    --card: #ffffff;
+    --border: #dddddd;
+    --hover: #eaeaea;
+}
+
+/* ---------- ALWAYS WHITE TEXTS ---------- */
+.dashboard .topbar-center,
+.dashboard .actions > strong {
+    color: #ffffff !important;
+}
+
+/* ---------- DARK MODE ---------- */
+#dark-toggle:checked ~ .dashboard {
+    --bg: #121212;
+    --text: #FFFFFF;
+    --nav: #333333;
+    --card: #1E1E1E;
+    --border: #333333;
+    --hover: #2A2A2A;
+}
+
+/* ---------- GLOBAL ---------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
     font-family: Arial, sans-serif;
 }
 
-/* ===== THEME ===== */
-body{
-    background:#f4f4f4;
-    color:#000;
-    transition:0.3s;
+body {
+    background: var(--bg);
+    color: var(--text);
 }
 
-#themeToggle:checked ~ .page{
-    background:#121212;
-    color:#fff;
+/* ---------- DASHBOARD ---------- */
+.dashboard {
+    display: flex;
+    min-height: 100vh;
+    background: var(--nav);
 }
 
-/* ===== HEADER ===== */
-.header{
-    display:flex;
-    align-items:center;
-    gap:15px;
-    padding:10px 20px;
-    background:#2c3e50;
-    color:#fff;
+/* ---------- SIDEBAR ---------- */
+#menu-toggle { display: none; }
+
+.sidebar {
+    width: 60px;
+    background: var(--nav);
+    overflow: hidden;
+    transition: 0.3s;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
 }
 
-/* MENU BUTTON */
-.menu-btn{
-    font-size:22px;
-    cursor:pointer;
+#menu-toggle:checked ~ .dashboard .sidebar {
+    width: 220px;
 }
 
-/* LOGO */
-.logo{
-    width:40px;
-    height:40px;
-    background:#fff;
-    color:#2c3e50;
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:20px;
-    font-weight:bold;
+.sidebar ul {
+    list-style: none;
+    padding: 10px;
 }
 
-/* TITLE */
-.title{
-    flex:1;
-    text-align:center;
+/* ---------- FIXED LOGO ---------- */
+.logo-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px 10px !important;
+    margin-bottom: 10px;
+    cursor: default !important;
 }
 
-/* ===== RIGHT CONTROLS ===== */
-.controls{
-    display:flex;
-    align-items:center;
-    gap:15px;
+.logo-item:hover {
+    background: transparent !important;
 }
 
-/* PROFILE ICON */
-.profile{
-    position:relative;
+.logo-circle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 20px;
+    font-weight: bold;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-.profile img{
-    width:35px;
-    height:35px;
-    border-radius:50%;
-    cursor:pointer;
+.logo-text {
+    display: none;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    white-space: nowrap;
 }
 
-/* OPTIONAL DROPDOWN (SHOW ON CLICK) */
-.profile-menu{
-    display:none;
-    position:absolute;
-    right:0;
-    top:45px;
-    background:#fff;
-    color:#000;
-    width:130px;
-    box-shadow:0 0 5px rgba(0,0,0,0.3);
+#menu-toggle:checked ~ .dashboard .sidebar .logo-text {
+    display: block;
 }
 
-.profile-menu a{
-    display:block;
-    padding:10px;
-    text-decoration:none;
-    color:#000;
+/* ---------- MENU ---------- */
+.sidebar li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    cursor: pointer;
+    color: #ffffff !important;
+    white-space: nowrap;
+    border-radius: 12px;
+    position: relative;
 }
 
-.profile-menu a:hover{
-    background:#ddd;
+.sidebar li:hover {
+    background: var(--hover);
+    color: #000000 !important;
 }
 
-/* Show dropdown when checkbox checked */
-#profileToggle:checked + label + .profile-menu{
-    display:block;
+.sidebar li:hover span {
+    color: #000000 !important;
 }
 
-/* ===== LAYOUT ===== */
-.page{
-    min-height:100vh;
+.sidebar li span {
+    width: 30px;
+    text-align: center;
+    font-size: 18px;
+    color: #ffffff !important;
 }
 
-/* ===== SIDEBAR ===== */
-.container{
-    display:flex;
-    transition:0.3s;
+.sidebar li p {
+    display: none;
+    font-weight: bold;
 }
 
-.sidebar{
-    width:220px;
-    background:#34495e;
-    color:#fff;
-    transition:0.3s;
-    min-height:calc(100vh - 100px);
+#menu-toggle:checked ~ .dashboard .sidebar li p {
+    display: inline;
 }
 
-/* SIDEBAR CLOSED */
-#sidebarToggle:checked ~ .page .container .sidebar{
-    margin-left:-220px;
+/* ---------- MAIN ---------- */
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg);
+    color: var(--text);
 }
 
-.sidebar ul{
-    list-style:none;
+/* ---------- TOPBAR ---------- */
+.topbar {
+    background: var(--nav);
+    padding: 15px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
-.sidebar li{
-    padding:15px;
-    cursor:pointer;
+.menu-btn {
+    cursor: pointer;
+    font-size: 20px;
+    color: #ffffff !important;
 }
 
-.sidebar li:hover{
-    background:#2c3e50;
+.menu-btn:hover {
+    color: #ffffff !important;
 }
 
-/* ===== CONTENT ===== */
-.content{
-    flex:1;
-    padding:20px;
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
 }
 
-/* ===== FOOTER ===== */
-.footer{
-    text-align:center;
-    padding:10px;
-    background:#2c3e50;
-    color:#fff;
+.actions strong {
+    margin: 0 4px;
 }
 
-/* ===== HIDDEN CHECKBOX ===== */
-input[type="checkbox"]{
-    display:none;
+/* ---------- SEARCH CURVED DESIGN ---------- */
+.search-input,
+.filter-input {
+    padding: 7px 14px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    outline: none;
+    font-size: 13px;
+    background: var(--card);
+    color: var(--text);
+    width: 100px;
 }
+
+.search-input::placeholder,
+.filter-input::placeholder {
+    color: #888;
+}
+
+.filter-input::-webkit-outer-spin-button,
+.filter-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* ---------- PROFILE ---------- */
+.profile {
+    position: relative;
+}
+
+.profile label {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: 2px solid var(--text);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--card);
+    cursor: pointer;
+}
+
+#profile-toggle { display: none; }
+
+.profile-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 45px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    min-width: 160px;
+    z-index: 100;
+}
+
+.profile-menu a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: var(--text);
+}
+
+.profile-menu a:hover {
+    background: var(--hover);
+}
+
+#profile-toggle:checked ~ .profile-menu {
+    display: block;
+}
+
+/* ---------- CONTENT ---------- */
+.content {
+    padding: 30px;
+    flex: 1;
+}
+
+.section {
+    display: none;
+}
+
+/* Show blank section by default */
+#blank {
+    display: block;
+}
+
+/* ---------- TABLE STYLES ---------- */
+.meet-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+}
+
+.meet-table thead th {
+    background: var(--nav);
+    color: #fff;
+    padding: 12px;
+    text-align: left;
+}
+
+.meet-table tbody td {
+    background: var(--card);
+    padding: 12px;
+    border-bottom: none;
+}
+
+.meet-table tbody tr td:first-child {
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+}
+
+.meet-table tbody tr td:last-child {
+    border-top-right-radius: 12px;
+    border-bottom-right-radius: 12px;
+}
+
+.meet-table tbody tr:hover td {
+    background: var(--hover);
+}
+
+/* ---------- ACTION BUTTONS FIX ---------- */
+.action-buttons {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+}
+
+.action-btn {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    min-width: 80px;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.accept { 
+    background: #28a745; 
+    color: white !important;
+}
+.reject { 
+    background: #dc3545; 
+    color: white !important;
+}
+.reschedule { 
+    background: #ffc107; 
+    color: #000 !important;
+}
+
+.action-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Ensure last column has proper spacing */
+.meet-table tbody td:last-child {
+    min-width: 280px;
+}
+
+/* ---------- PAGINATION ---------- */
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.pagination button {
+    padding: 5px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background: #344b62;
+    color: #fff !important;
+    font-size: 13px;
+    transition: 0.2s;
+}
+
+.pagination button:hover:not(:disabled) {
+    background: #2a3d55;
+}
+
+.pagination button:disabled {
+    background: #999;
+    cursor: default;
+}
+
+/* ---------- FOOTER ---------- */
+footer {
+    background: var(--card);
+    text-align: center;
+    padding: 10px;
+    border-top: 1px solid var(--border);
+}
+
+/* ---------- DARK MODE FIXES ---------- */
+#dark-toggle:checked ~ .dashboard .topbar-center {
+    color: #FFFFFF !important;
+}
+
+#dark-toggle:checked ~ .dashboard .actions > strong {
+    color: #FFFFFF !important;
+}
+
+#dark-toggle:checked ~ .dashboard .meet-table th {
+    color: #FFFFFF;
+}
+
+#dark-toggle:checked ~ .dashboard a {
+    color: #eef1f4;
+}
+
+.topbar-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/* Status badges */
+.status-badge {
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.status-pending { background: #ffc107; color: #000; }
+.status-approved { background: #28a745; color: white; }
+.status-rejected { background: #dc3545; color: white; }
+.status-rescheduled { background: #17a2b8; color: white; }
+
+/* Filter controls */
+.section-controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+/* Messages */
+.messages {
+    margin-bottom: 20px;
+}
+
+.alert {
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.alert-success {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-error {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+/* Document link */
+.document-link {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.document-link:hover {
+    text-decoration: underline;
+}
+
+/* No records message */
+.no-records {
+    text-align: center;
+    padding: 40px;
+    font-size: 16px;
+    color: #666;
+}
+
+/* Dark mode logo fix */
+#dark-toggle:checked ~ .dashboard .logo-circle {
+    background: #ffffff !important;
+    color: #000000 !important;
+    border-color: #555;
+}
+/* ---------- CUSTOM CONFIRM MODAL ---------- */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.modal-box {
+    background: var(--card);
+    padding: 25px;
+    border-radius: 12px;
+    width: 320px;
+    text-align: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.modal-box h3 {
+    margin-bottom: 20px;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.modal-btn {
+    padding: 7px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.modal-btn.yes {
+    background: #28a745;
+    color: white;
+}
+
+.modal-btn.no {
+    background: #dc3545;
+    color: white;
+}
+
+.modal-input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--card);
+    color: var(--text);
+}
+
 </style>
 </head>
 
+
 <body>
 
-<!-- TOGGLES -->
-<input type="checkbox" id="themeToggle">
-<input type="checkbox" id="sidebarToggle">
+<input type="checkbox" id="dark-toggle" hidden>
+<input type="checkbox" id="menu-toggle" hidden>
 
-<div class="page">
+<div class="dashboard">
 
-    <!-- ===== HEADER ===== -->
-    <div class="header">
-        <label for="sidebarToggle" class="menu-btn">☰</label>
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <ul>
+        <!-- FIXED LOGO - White circle with black N -->
+        <div class="logo-item">
+            <div class="logo-circle">N</div>
+            
+        </div>
 
-        <div class="logo">N</div>
+        <li onclick="showSection('scheduled')">
+            <span>📅</span><p>Scheduled Meets</p>
+        </li>
 
-        <div class="title">Admin Dashboard</div>
+        <li onclick="showSection('approved')">
+            <span>✅</span><p>Approved Meets</p>
+        </li>
 
-        <div class="controls">
-            <label for="themeToggle" style="cursor:pointer;">🌙</label>
+        <li onclick="showSection('rejected')">
+            <span>❌</span><p>Rejected Meets</p>
+        </li>
 
-            <!-- PROFILE ICON -->
-            <div class="profile">
-                <input type="checkbox" id="profileToggle">
-                <label for="profileToggle">
-                    <img src="profile.jpg" alt="Admin">
-                </label>
+        <li onclick="showSection('rescheduled')">
+            <span>🔄</span><p>Rescheduled Meets</p>
+        </li>
 
-                <div class="profile-menu">
-                    <a href="#">My Profile</a>
-                    <a href="#">Logout</a>
-                </div>
+        <li onclick="showSection('reports')">
+            <span>📊</span><p>Reports</p>
+        </li>
+    </ul>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<div class="topbar">
+    <!-- LEFT -->
+    <div style="display:flex; align-items:center; gap:15px;">
+        <label for="menu-toggle" class="menu-btn">☰</label>
+    </div>
+
+    <!-- CENTER -->
+    <div class="topbar-center">
+        DASHBOARD
+    </div>
+
+    <!-- RIGHT -->
+    <div class="actions">
+        <label for="dark-toggle" style="cursor:pointer;">🌙</label>
+        <strong>admin</strong>
+        <div class="profile">
+            <label for="profile-toggle">👤</label>
+            <input type="checkbox" id="profile-toggle">
+            <div class="profile-menu">
+                <a href="#">My Profile</a>
+                <a href="#">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="content">
+
+    <!-- Display Django messages -->
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    
+
+    <!-- SCHEDULED MEETS -->
+    <div id="scheduled" class="section">
+        <h2 style="margin-bottom:15px;">Scheduled Meets</h2>
+        <div class="section-controls">
+            <input type="text" id="globalSearch" placeholder="Search by name..." class="search-input">
+            <input type="number" id="pageSizeInput" placeholder="Pages" class="filter-input" min="1">
+        </div>
+
+        <div style="overflow-x:auto;">
+            <table class="meet-table">
+                <thead>
+                    <tr>
+                        <th>Visitor ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Category</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Attendee</th>
+                        <th>Reason</th>
+                        <th>Document</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="scheduled-tbody">
+                    {% for v in visitors %}
+                    {% if v.status == 'Pending' %}
+                    <tr data-id="{{ v.id }}">
+                        <td>{{ v.visitor_id }}</td>
+                        <td>{{ v.visitor_name }}</td>
+                        <td>{{ v.visitor_email }}</td>
+                        <td>{{ v.category }}</td>
+                        <td>{{ v.appointment_date }}</td>
+                        <td>{{ v.appointment_time }}</td>
+                        <td>{{ v.designated_attendee }}</td>
+                        <td>{{ v.reason }}</td>
+                        <td>
+                            {% if v.document %}
+    <a href="{{ v.document.url }}" target="_blank" class="document-link">View</a>
+{% else %}
+    <span style="color: #999;">No Document</span>
+{% endif %}
+
+                        </td>
+                        <td>
+    <div class="action-buttons">
+        <button class="action-btn accept" onclick="showConfirmDialog('accept', '{{ v.id }}', '{{ v.visitor_name }}')">Accept</button>
+        <button class="action-btn reject" onclick="showConfirmDialog('reject', '{{ v.id }}', '{{ v.visitor_name }}')">Reject</button>
+        <button class="action-btn reschedule"
+onclick="openRescheduleModal('{{ v.id }}','{{ v.appointment_date }}','{{ v.appointment_time }}')">
+Reschedule
+    </div>
+
+
+                    </tr>
+                    {% endif %}
+                    {% empty %}
+                    <tr>
+                        <td colspan="10" class="no-records">No scheduled meetings found</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="pagination">
+                <button id="prevBtn">Prev</button>
+                <button id="nextBtn">Next</button>
             </div>
         </div>
     </div>
 
-    <!-- ===== SIDEBAR + CONTENT ===== -->
-    <div class="container">
-        <div class="sidebar">
-            <ul>
-                <li>Scheduled Meets</li>
-                <li>Approved Meets</li>
-                <li>Rejected Meets</li>
-                <li>Reports</li>
-            </ul>
+    <!-- APPROVED MEETS -->
+    <div id="approved" class="section">
+        <h2 style="margin-bottom:15px;">Approved Meets</h2>
+        <div class="section-controls">
+            <input type="text" id="globalSearchApproved" placeholder="Search by name..." class="search-input">
+            <input type="number" id="pageSizeInputApproved" placeholder="Pages" class="filter-input" min="1">
         </div>
 
-        <div class="content">
-            <h2>Welcome Admin</h2>
-            <p>Main dashboard content here</p>
+        <table class="meet-table">
+            <thead>
+                <tr>
+                    <th>Visitor ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Category</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Attendee</th>
+                    <th>Reason</th>
+                    <th>Document</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="approved-tbody">
+                {% for v in visitors %}
+                {% if v.status == 'Approved' %}
+                <tr>
+                    <td>{{ v.visitor_id }}</td>
+                    <td>{{ v.visitor_name }}</td>
+                    <td>{{ v.visitor_email }}</td>
+                    <td>{{ v.category }}</td>
+                    <td>{{ v.appointment_date }}</td>
+                    <td>{{ v.appointment_time }}</td>
+                    <td>{{ v.designated_attendee }}</td>
+                    <td>{{ v.reason }}</td>
+                    <td>
+                        {% if v.document %}
+    <a href="{{ v.document.url }}" target="_blank" class="document-link">View</a>
+{% else %}
+    <span style="color: #999;">No Document</span>
+{% endif %}
+
+                    </td>
+                    <td>
+                        <span class="status-badge status-approved">{{ v.status }}</span>
+                    </td>
+
+                    <td>
+    <a href="{% url 'delete_meet' v.id %}"
+   onclick="return confirm('Are you sure you want to delete this record?');"
+   style="
+      background:#dc3545;
+      color:white;
+      padding:6px 12px;
+      border-radius:6px;
+      text-decoration:none;
+      font-size:13px;
+      font-weight:600;
+      display:inline-block;
+   ">
+   Delete
+
+</td>
+
+                </tr>
+                {% endif %}
+                {% empty %}
+                <tr>
+                    <td colspan="10" class="no-records">No approved meetings found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="pagination">
+            <button id="prevBtnApproved">Prev</button>
+            <button id="nextBtnApproved">Next</button>
         </div>
     </div>
 
-    <!-- ===== FOOTER ===== -->
-    <div class="footer">
-        © Dashboard | Close Page
+    <!-- REJECTED MEETS -->
+    <div id="rejected" class="section">
+        <h2 style="margin-bottom:15px;">Rejected Meets</h2>
+        <div class="section-controls">
+            <input type="text" id="globalSearchRejected" placeholder="Search by name..." class="search-input">
+            <input type="number" id="pageSizeInputRejected" placeholder="Pages" class="filter-input" min="1">
+        </div>
+
+        <table class="meet-table">
+            <thead>
+                <tr>
+                    <th>Visitor ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Category</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Attendee</th>
+                    <th>Reason</th>
+                    <th>Document</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="rejected-tbody">
+                {% for v in visitors %}
+                {% if v.status == 'Rejected' %}
+                <tr>
+                    <td>{{ v.visitor_id }}</td>
+                    <td>{{ v.visitor_name }}</td>
+                    <td>{{ v.visitor_email }}</td>
+                    <td>{{ v.category }}</td>
+                    <td>{{ v.appointment_date }}</td>
+                    <td>{{ v.appointment_time }}</td>
+                    <td>{{ v.designated_attendee }}</td>
+                    <td>{{ v.reason }}</td>
+                    <td>
+                        {% if v.document %}
+    <a href="{{ v.document.url }}" target="_blank" class="document-link">View</a>
+{% else %}
+    <span style="color: #999;">No Document</span>
+{% endif %}
+
+                    </td>
+                    <td>
+                        <span class="status-badge status-rejected">{{ v.status }}</span>
+                    </td>
+
+                    <td>
+    <a href="{% url 'delete_meet' v.id %}"
+   onclick="return confirm('Are you sure you want to delete this record?');"
+   style="
+      background:#dc3545;
+      color:white;
+      padding:6px 12px;
+      border-radius:6px;
+      text-decoration:none;
+      font-size:13px;
+      font-weight:600;
+      display:inline-block;
+   ">
+   Delete
+</a>
+
+</td>
+
+                </tr>
+                {% endif %}
+                {% empty %}
+                <tr>
+                    <td colspan="10" class="no-records">No rejected meetings found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="pagination">
+            <button id="prevBtnRejected">Prev</button>
+            <button id="nextBtnRejected">Next</button>
+        </div>
+    </div>
+
+    <!-- RESCHEDULED MEETS -->
+    <div id="rescheduled" class="section">
+        <h2 style="margin-bottom:15px;">Rescheduled Meets</h2>
+        <div class="section-controls">
+            <input type="text" id="globalSearchRescheduled" placeholder="Search by name..." class="search-input">
+            <input type="number" id="pageSizeInputRescheduled" placeholder="Pages" class="filter-input" min="1">
+        </div>
+
+        <table class="meet-table">
+            <thead>
+                <tr>
+                    <th>Visitor ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Category</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Attendee</th>
+                    <th>Reason</th>
+                    <th>Document</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="rescheduled-tbody">
+                {% for v in visitors %}
+                {% if v.status == 'Rescheduled' %}
+                <tr>
+                    <td>{{ v.visitor_id }}</td>
+                    <td>{{ v.visitor_name }}</td>
+                    <td>{{ v.visitor_email }}</td>
+                    <td>{{ v.category }}</td>
+                    <td>{{ v.appointment_date }}</td>
+                    <td>{{ v.appointment_time }}</td>
+                    <td>{{ v.designated_attendee }}</td>
+                    <td>{{ v.reason }}</td>
+                    <td>
+                        {% if v.document %}
+    <a href="{{ v.document.url }}" target="_blank" class="document-link">View</a>
+{% else %}
+    <span style="color: #999;">No Document</span>
+{% endif %}
+
+                    </td>
+                    <td>
+                        <span class="status-badge status-rescheduled">{{ v.status }}</span>
+                    </td>
+                </tr>
+                {% endif %}
+                {% empty %}
+                <tr>
+                    <td colspan="10" class="no-records">No rescheduled meetings found</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <div class="pagination">
+            <button id="prevBtnRescheduled">Prev</button>
+            <button id="nextBtnRescheduled">Next</button>
+        </div>
+    </div>
+
+    <!-- REPORTS -->
+    <div id="reports" class="section">
+        <h2>Reports</h2>
+       
     </div>
 
 </div>
+
+<footer></footer>
+</div>
+</div>
+
+<script>
+// Show blank section by default
+document.addEventListener('DOMContentLoaded', function() {
+    showSection('blank');
+    
+    
+    // Initialize pagination for scheduled section
+    const pageSizeInput = document.getElementById('pageSizeInput');
+    if (pageSizeInput) {
+        pageSizeInput.addEventListener('input', function() {
+            currentPage = 1;
+            updatePagination();
+        });
+    }
+    
+    updatePagination();
+    
+    // Initialize pagination for other sections
+    setupSectionPagination('Approved');
+    setupSectionPagination('Rejected');
+    setupSectionPagination('Rescheduled');
+});
+
+function showSection(id) {
+    // Hide all sections
+    document.querySelectorAll('.section').forEach(s => s.style.display = 'none');
+    // Show the selected section
+    document.getElementById(id).style.display = 'block';
+}
+
+/* ---------- SIDEBAR TOOLTIP ---------- */
+const menuToggle = document.getElementById("menu-toggle");
+const sidebarItems = document.querySelectorAll(".sidebar li");
+
+function updateSidebarTooltips() {
+    const sidebarClosed = !menuToggle.checked;
+    
+    sidebarItems.forEach(item => {
+        // Skip the logo item
+        if (item.closest('.logo-item')) return;
+        
+        const text = item.querySelector("p");
+        if (!text) return;
+        
+        if (sidebarClosed) {
+            // Set title for tooltip when sidebar is closed
+            item.setAttribute("title", text.innerText);
+        } else {
+            // Remove title when sidebar is open
+            item.removeAttribute("title");
+        }
+    });
+}
+
+// Initial call to set tooltips
+updateSidebarTooltips();
+
+// Update tooltips when menu toggle changes
+menuToggle.addEventListener("change", function() {
+    // Small delay to ensure CSS transition completes
+    setTimeout(updateSidebarTooltips, 50);
+});
+
+// Also update tooltips when hovering over sidebar items
+sidebarItems.forEach(item => {
+    item.addEventListener('mouseenter', function() {
+        if (!menuToggle.checked) {
+            const text = this.querySelector("p");
+            if (text) {
+                this.setAttribute("title", text.innerText);
+            }
+        }
+    });
+    
+    item.addEventListener('mouseleave', function() {
+        // Tooltip will be managed by updateSidebarTooltips function
+    });
+});
+
+let currentPage = 1;
+
+function paginateScheduled() {
+    const pageSize = parseInt(document.getElementById('pageSizeInput').value) || 0;
+    const rows = document.querySelectorAll('#scheduled-tbody tr');
+
+    if (pageSize <= 0) {
+        rows.forEach(r => r.style.display = '');
+        return;
+    }
+
+    const start = (currentPage - 1) * pageSize;
+    const end = start + pageSize;
+
+    rows.forEach((row, index) => {
+        row.style.display = (index >= start && index < end) ? '' : 'none';
+    });
+}
+
+document.getElementById('pageSizeInput').addEventListener('input', function () {
+    currentPage = 1;
+    paginateScheduled();
+});
+
+document.getElementById('prevBtn').addEventListener('click', function () {
+    if (currentPage > 1) {
+        currentPage--;
+        paginateScheduled();
+    }
+});
+
+document.getElementById('nextBtn').addEventListener('click', function () {
+    const pageSize = parseInt(document.getElementById('pageSizeInput').value) || 0;
+    const totalRows = document.querySelectorAll('#scheduled-tbody tr').length;
+    const maxPage = Math.ceil(totalRows / pageSize);
+
+    if (currentPage < maxPage) {
+        currentPage++;
+        paginateScheduled();
+    }
+});
+
+paginateScheduled();
+
+
+function setupSearch(inputId, tableBodyId) {
+    const input = document.getElementById(inputId);
+    const tbody = document.getElementById(tableBodyId);
+
+    if (!input || !tbody) return;
+
+    input.addEventListener('input', function () {
+        const query = this.value.toLowerCase();
+        const rows = tbody.querySelectorAll('tr');
+
+        rows.forEach(row => {
+            const nameCell = row.querySelector('td:nth-child(2)');
+            if (!nameCell) return;
+
+            row.style.display = nameCell.textContent.toLowerCase().includes(query)
+                ? ''
+                : 'none';
+        });
+    });
+}
+
+// Attach search to all sections
+setupSearch('globalSearch', 'scheduled-tbody');
+setupSearch('globalSearchApproved', 'approved-tbody');
+setupSearch('globalSearchRejected', 'rejected-tbody');
+setupSearch('globalSearchRescheduled', 'rescheduled-tbody');
+
+
+// Pagination for other sections
+function setupSectionPagination(sectionId) {
+    const pageInput = document.getElementById(`pageSizeInput${sectionId}`);
+    const prevBtn = document.getElementById(`prevBtn${sectionId}`);
+    const nextBtn = document.getElementById(`nextBtn${sectionId}`);
+    const tbody = document.querySelector(`#${sectionId} tbody`);
+    
+    if (!pageInput || !tbody) return;
+    
+    let currentPage = 1;
+    
+    function updateSectionPagination() {
+        const pageSize = parseInt(pageInput.value) || 0;
+        const rows = Array.from(tbody.querySelectorAll('tr'));
+        
+        if (!pageSize || pageSize <= 0) {
+            rows.forEach(row => row.style.display = '');
+            if (prevBtn) prevBtn.disabled = true;
+            if (nextBtn) nextBtn.disabled = true;
+            return;
+        }
+        
+        const start = (currentPage - 1) * pageSize;
+        const end = start + pageSize;
+        
+        rows.forEach((row, index) => {
+            row.style.display = (index >= start && index < end) ? '' : 'none';
+        });
+        
+        const maxPage = Math.ceil(rows.length / pageSize);
+        if (prevBtn) prevBtn.disabled = currentPage === 1;
+        if (nextBtn) nextBtn.disabled = currentPage >= maxPage;
+    }
+    
+    if (pageInput) {
+        pageInput.addEventListener('input', function() {
+            currentPage = 1;
+            updateSectionPagination();
+        });
+    }
+    
+    if (prevBtn) {
+        prevBtn.addEventListener('click', function() {
+            if (currentPage > 1) {
+                currentPage--;
+                updateSectionPagination();
+            }
+        });
+    }
+    
+    if (nextBtn) {
+        nextBtn.addEventListener('click', function() {
+            const pageSize = parseInt(pageInput.value) || 0;
+            const rows = Array.from(tbody.querySelectorAll('tr'));
+            const maxPage = Math.ceil(rows.length / pageSize);
+            
+            if (currentPage < maxPage) {
+                currentPage++;
+                updateSectionPagination();
+            }
+        });
+    }
+    
+    // Initial update
+    updateSectionPagination();
+}
+
+/* ---------- FOOTER ---------- */
+document.querySelector('footer').innerHTML = `© ${new Date().getFullYear()} Dashboard | All Rights Reserved`;
+
+
+function attachSearch(inputId, tbodyId) {
+    const input = document.getElementById(inputId);
+    const tbody = document.getElementById(tbodyId);
+
+    if (!input || !tbody) {
+        console.log("Search missing:", inputId, tbodyId);
+        return;
+    }
+
+    input.addEventListener("keyup", function () {
+        let filter = this.value.toLowerCase();
+        let rows = tbody.getElementsByTagName("tr");
+
+        for (let i = 0; i < rows.length; i++) {
+            let nameCell = rows[i].getElementsByTagName("td")[1];
+            if (!nameCell) continue;
+
+            let text = nameCell.textContent || nameCell.innerText;
+            rows[i].style.display = text.toLowerCase().includes(filter) ? "" : "none";
+        }
+    });
+}
+
+// Connect search inputs to their tables
+attachSearch("globalSearch", "scheduled-tbody");
+attachSearch("globalSearchApproved", "approved-tbody");
+attachSearch("globalSearchRejected", "rejected-tbody");
+attachSearch("globalSearchRescheduled", "rescheduled-tbody");
+
+
+let currentAction = null;
+let currentId = null;
+
+function showConfirmDialog(action, id, name) {
+    currentAction = action;
+    currentId = id;
+
+    const text = action === 'accept' 
+        ? `Are you sure you want to accept ${name}'s meeting?`
+        : `Are you sure you want to reject ${name}'s meeting?`;
+
+    document.getElementById('confirmText').innerText = text;
+    document.getElementById('confirmModal').style.display = 'flex';
+}
+
+function closeModal() {
+    document.getElementById('confirmModal').style.display = 'none';
+}
+
+function confirmAction() {
+    if (currentAction === 'accept') {
+        window.location.href = `/accept/${currentId}/`;
+    }
+    else if (currentAction === 'reject') {
+        window.location.href = `/reject/${currentId}/`;
+    }
+}
+
+let rescheduleId = null;
+
+function openRescheduleModal(id, date, time) {
+    const today = new Date().toISOString().split('T')[0];
+
+    const dateInput = document.getElementById('newDate');
+    const timeInput = document.getElementById('newTime');
+
+    // Disable past dates
+    dateInput.min = today;
+
+    dateInput.value = date;
+    timeInput.value = time;
+
+    document.getElementById('rescheduleForm').action = `/reschedule/${id}/`;
+    document.getElementById('rescheduleModal').style.display = 'flex';
+}
+
+document.getElementById('newTime').addEventListener('change', function () {
+    if (this.value < "09:00" || this.value > "18:00") {
+        alert("Please select time between 9:00 AM and 6:00 PM");
+        this.value = "";
+    }
+});
+
+
+
+function closeReschedule() {
+    document.getElementById('rescheduleModal').style.display = 'none';
+}
+
+function attachSearch(inputId, tbodyId) {
+    const input = document.getElementById(inputId);
+    const tbody = document.getElementById(tbodyId);
+
+    if (!input || !tbody) {
+        console.log("Search not attached:", inputId, tbodyId);
+        return;
+    }
+
+    input.addEventListener("keyup", function () {
+        const value = this.value.toLowerCase();
+        const rows = tbody.getElementsByTagName("tr");
+
+        for (let row of rows) {
+            const nameCell = row.getElementsByTagName("td")[1]; // Name column
+            if (!nameCell) continue;
+
+            row.style.display = nameCell.innerText.toLowerCase().includes(value)
+                ? ""
+                : "none";
+        }
+    });
+}
+
+/* Attach search */
+attachSearch("globalSearch", "scheduled-tbody");
+attachSearch("globalSearchApproved", "approved-tbody");
+attachSearch("globalSearchRejected", "rejected-tbody");
+attachSearch("globalSearchRescheduled", "rescheduled-tbody");
+
+
+
+</script>
+<!-- CONFIRM MODAL -->
+<div id="confirmModal" class="modal-overlay">
+  <div class="modal-box">
+    <h3 id="confirmText"></h3>
+    <div class="modal-actions">
+      <button class="modal-btn yes" onclick="confirmAction()">Yes</button>
+      <button class="modal-btn no" onclick="closeModal()">No</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESCHEDULE MODAL -->
+<div id="rescheduleModal" class="modal-overlay">
+  <div class="modal-box">
+    <h3>Reschedule Meeting</h3>
+
+    <form id="rescheduleForm" method="post">
+      {% csrf_token %}
+
+      <input type="date" name="date" id="newDate" class="modal-input" required>
+
+<input type="time" name="time" id="newTime" class="modal-input"
+       min="09:00" max="18:00" required>
+
+
+      <div class="modal-actions">
+        <button type="submit" class="modal-btn yes">OK</button>
+        <button type="button" class="modal-btn no" onclick="closeReschedule()">Cancel</button>
+      </div>
+    </form>
+
+  </div>
+</div>
+
+
 </body>
 </html>

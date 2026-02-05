@@ -4,4 +4,6 @@ from .models import *
 admin.site.register(Visitor)
 admin.site.register(VisitorSchedule)
 
+
+
 # Register your models here.

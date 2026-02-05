@@ -1,26 +1,28 @@
 from django import forms
 from .models import Profile
-from .models import Visitor
 
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = [
-            'profile_picture','name','emp_id','email',
-            'designation','department','reporting_to','mobile'
+            'profile_picture', 'name', 'emp_id', 'email', 
+            'designation', 'department', 'reporting_to', 'mobile'
         ]
 
+from django import forms
+from .models import Visitor
 
-
-class VisitorsForm(forms.ModelForm):
+class VisitorForm(forms.ModelForm):
     class Meta:
         model = Visitor
         fields = [
-            'visitor_name','visitor_email','category','appointmrnt_date',
-            'appointment_time','reason','designates_attendee','document'
-         ]
-        
+            'visitor_name', 'visitor_email', 'category', 'appointment_date',
+            'appointment_time', 'reason', 'designated_attendee', 'document'
+        ]
 
+
+from django import forms
+from .models import Visitor
 
 class RescheduleMeetForm(forms.ModelForm):
     class Meta:

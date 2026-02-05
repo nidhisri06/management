@@ -1,0 +1,29 @@
+<div id="scheduled" class="section">
+    <h2>Scheduled Meets</h2>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Date</th>
+            <th>Time</th>
+            <th>Action</th>
+        </tr>
+
+        {% for v in scheduled_meets %}
+        <tr>
+            <td>{{ v.visitor_id }}</td>
+            <td>{{ v.visitor_name }}</td>
+            <td>{{ v.visitor_email }}</td>
+            <td>{{ v.appointment_date }}</td>
+            <td>{{ v.appointment_time }}</td>
+            <td>
+                <a href="{% url 'accept_meet' v.id %}">Accept</a> |
+                <a href="{% url 'reject_meet' v.id %}">Reject</a> |
+                <a href="{% url 'reschedule_meet' v.id %}">Reschedule</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>

@@ -1,0 +1,41 @@
+<div id="approved" class="section">
+    <h2 style="margin-bottom:15px;">Approved Meets</h2>
+    <div style="overflow-x:auto;">
+        <table class="meet-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Category</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Reason</th>
+                    <th>Attendee</th>
+                    <th>Document</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for v in approved_meets %}
+                <tr>
+                    <td>{{ v.visitor.visitor_id }}</td>
+                    <td>{{ v.visitor.visitor_name }}</td>
+                    <td>{{ v.visitor.visitor_email }}</td>
+                    <td>{{ v.visitor.category }}</td>
+                    <td>{{ v.visitor.appointment_date }}</td>
+                    <td>{{ v.visitor.appointment_time }}</td>
+                    <td>{{ v.visitor.reason }}</td>
+                    <td>{{ v.visitor.designated_attendee }}</td>
+                    <td>
+                        {% if v.visitor.document %}
+                        <a href="{{ v.visitor.document.url }}" target="_blank">View</a>
+                        {% else %}-{% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="9" style="text-align:center;">No Approved Meets</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
